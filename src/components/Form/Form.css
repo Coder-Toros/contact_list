@@ -1,0 +1,23 @@
+ form {
+    margin: 0 25px;
+ }
+ .wrapper-input{
+   display: flex;
+   margin-top: 10px;
+  }
+  .delete-btn{
+    border: 1px solid black;
+    min-height: 40px;
+    min-width: 40px;
+    text-align: center;
+    margin-left: 30px;
+    display: inline-block;
+  }
+  input {
+    min-width: 40px;
+    margin-right: -80px;
+    min-height: 40px;
+    border: 2px solid;
+    font-size: 1em;
+    padding: 15px;
+  } 

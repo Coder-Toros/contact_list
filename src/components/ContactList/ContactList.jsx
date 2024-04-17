@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import Contact from '../Contact_item/Contact_item';
-import "./Contact_list.css";
+import Contact from '../ContactItem/ContactItem';
+import "./ContactList.css";
 import { nanoid } from 'nanoid';
 
-export class Contact_list extends Component {
+export class ContactList extends Component {
   render() {
     return (
       <>
         {this.props.contactsList.map((contact) => {
           return (
-              <Contact 
+              <Contact
                 key={nanoid()} 
                 contact={contact} 
                 onDelete={this.props.onDelete}
@@ -28,4 +28,4 @@ export class Contact_list extends Component {
   }
 }
 
-export default Contact_list;
+export default ContactList;

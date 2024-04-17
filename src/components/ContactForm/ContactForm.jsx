@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
-import './Form.css';
-export class Form extends Component {
-  state = {};
-  
+import './ContactForm.css';
+export class ContactForm extends Component {
+  state = {
+    id: null,
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+  };
+
   createEmptyContact() {
     return {
       id: null,
@@ -13,47 +19,44 @@ export class Form extends Component {
     };
   }
 
-  static getDerivedStateFromProps(props, state){
-    if(props.currentContact.id !== state.id){
-    return {
-      ...props.currentContact}
+  static getDerivedStateFromProps(props, state) {
+    if (props.currentContact.id !== state.id) {
+      return {
+        ...props.currentContact,
+      };
     }
-    return null
+    return null;
   }
 
   handlerInputChange = (event) => {
-    const {name, value} = event.target;
-      this.setState({
-        [name]: value,
-    })
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value,
+    });
   };
 
   clearInputValue = (e) => {
-    const {name} = e.target.previousSibling;
-      this.setState({
-        [name]: "",
-    })
+    const { name } = e.target.previousSibling;
+    this.setState({
+      [name]: '',
+    });
   };
 
   onDeleteContact = () => {
     this.props.deleteContact(this.state.id);
-  }
+  };
 
   onFormSubmit = (e) => {
     e.preventDefault();
     this.props.onSubmit(this.state);
-    if(!this.state.id) {
-    this.setState(
-      this.createEmptyContact());
+    if (!this.state.id) {
+      this.setState(this.createEmptyContact());
     }
   };
 
   render() {
     return (
-      <form
-        id='contacts-form'
-        onSubmit={this.onFormSubmit}
-      >
+      <form id='contacts-form' onSubmit={this.onFormSubmit}>
         <div className='wrapper-input'>
           <input
             type='text'
@@ -62,10 +65,7 @@ export class Form extends Component {
             onChange={this.handlerInputChange}
             placeholder='First name'
           />
-          <span 
-            className='delete-btn'
-            onClick={this.clearInputValue}
-          >
+          <span className='delete-btn' onClick={this.clearInputValue}>
             X
           </span>
         </div>
@@ -77,10 +77,7 @@ export class Form extends Component {
             onChange={this.handlerInputChange}
             placeholder='Last name'
           />
-          <span 
-            className='delete-btn'
-            onClick={this.clearInputValue}
-          >
+          <span className='delete-btn' onClick={this.clearInputValue}>
             X
           </span>
         </div>
@@ -92,41 +89,33 @@ export class Form extends Component {
             onChange={this.handlerInputChange}
             placeholder='Email'
           />
-          <span 
-            className='delete-btn'
-            onClick={this.clearInputValue}
-          >
+          <span className='delete-btn' onClick={this.clearInputValue}>
             X
           </span>
         </div>
         <div className='wrapper-input'>
           <input
-            type='number'
+            type='text'
             name='phone'
             value={this.state.phone}
             onChange={this.handlerInputChange}
             placeholder='Phone'
           />
-          <span 
-            className='delete-btn'
-            onClick={this.clearInputValue}
-          >
+          <span className='delete-btn' onClick={this.clearInputValue}>
             X
           </span>
         </div>
         <button type='submit'>Save</button>
-        {this.state.id
-        ? <button 
-            type='button'
-            onClick={this.onDeleteContact}
-          >
+        {this.state.id ? (
+          <button type='button' onClick={this.onDeleteContact}>
             Delete
-          </button> 
-        
-        : ''}
+          </button>
+        ) : (
+          ''
+        )}
       </form>
     );
   }
 }
 
-export default Form;
+export default ContactForm;

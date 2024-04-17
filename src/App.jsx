@@ -1,8 +1,8 @@
 import { Component } from 'react';
 import { nanoid } from 'nanoid';
 import './App.css';
-import Contact_list from './components/Contact_list/Contact_list';
-import Form from './components/Form/Form';
+import ContactList from './components/ContactList/ContactList';
+import ContactForm from './components/ContactForm/ContactForm';
 
 export class App extends Component {
   state = {
@@ -101,14 +101,14 @@ export class App extends Component {
         <h1>Contact list</h1>
         <div className='wrapper'>
           <div className='contacts-wrapper'>
-            <Contact_list
+            <ContactList
               contactsList={this.state.contacts}
               createNewContact={this.createNewContact}
               onDelete={this.deleteContact}
               selectContact={this.selectEditedContact}
             />
           </div>
-          <Form 
+          <ContactForm 
             onSubmit={this.saveContact} 
             deleteContact={this.deleteContact}
             currentContact={this.state.currentContact} 

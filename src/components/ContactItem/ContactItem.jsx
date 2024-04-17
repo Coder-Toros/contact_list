@@ -1,6 +1,6 @@
 import { Component } from 'react';
-import './Contact_item.css';
-export class Contact extends Component {
+import './ContactItem.css';
+export class ContactItem extends Component {
   onContactDelete = (e) => {
     e.stopPropagation();
     this.props.onDelete(this.props.contact.id);
@@ -33,4 +33,4 @@ export class Contact extends Component {
   }
 }
 
-export default Contact;
+export default ContactItem;

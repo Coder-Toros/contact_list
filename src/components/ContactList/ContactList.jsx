@@ -1,31 +1,27 @@
-import React, { Component } from 'react';
 import Contact from '../ContactItem/ContactItem';
 import "./ContactList.css";
-import { nanoid } from 'nanoid';
 
-export class ContactList extends Component {
-  render() {
+function ContactList({contactsList, onDelete, selectContact, createNewContact}) {
     return (
       <>
-        {this.props.contactsList.map((contact) => {
+        {contactsList.map((contact) => {
           return (
               <Contact
-                key={nanoid()} 
+                key={contact.id} 
                 contact={contact} 
-                onDelete={this.props.onDelete}
-                selectContact={this.props.selectContact}
+                onDelete={onDelete}
+                selectContact={selectContact}
               />
           );
         })}
         <button 
-          onClick={this.props.createNewContact}
+          onClick={createNewContact}
           className='btn'
         >
         New
         </button>
       </>
     );
-  }
 }
 
 export default ContactList;

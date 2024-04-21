@@ -1,71 +1,50 @@
-import React, { Component } from 'react';
+import { useEffect, useState } from 'react';
 import './ContactForm.css';
-export class ContactForm extends Component {
-  state = {
-    id: null,
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-  };
 
-  createEmptyContact() {
-    return {
-      id: null,
-      firstName: '',
-      lastName: '',
-      email: '',
-      phone: '',
-    };
-  }
+function ContactForm({onSubmit, deleteContact, currentContact, createEmptyContact}) {
 
-  static getDerivedStateFromProps(props, state) {
-    if (props.currentContact.id !== state.id) {
-      return {
-        ...props.currentContact,
-      };
-    }
-    return null;
-  }
+  const [formContact, setFormContact] = useState({...createEmptyContact()})
+  
+  useEffect(() => {
+    setFormContact(currentContact)
+  }, [currentContact])
 
-  handlerInputChange = (event) => {
+  const handlerInputChange = (event) => {
     const { name, value } = event.target;
-    this.setState({
+    setFormContact({
+      ...formContact,
       [name]: value,
     });
   };
 
-  clearInputValue = (e) => {
+  const clearInputValue = (e) => {
     const { name } = e.target.previousSibling;
-    this.setState({
+    setFormContact({
+      ...formContact,
       [name]: '',
     });
   };
 
-  onDeleteContact = () => {
-    this.props.deleteContact(this.state.id);
+  const onDeleteContact = () => {
+    deleteContact(formContact.id);
   };
 
-  onFormSubmit = (e) => {
+  const onFormSubmit = (e) => {
     e.preventDefault();
-    this.props.onSubmit(this.state);
-    if (!this.state.id) {
-      this.setState(this.createEmptyContact());
-    }
+    onSubmit(formContact);
   };
 
-  render() {
     return (
-      <form id='contacts-form' onSubmit={this.onFormSubmit}>
+      <form id='contacts-form' onSubmit={onFormSubmit}>
         <div className='wrapper-input'>
           <input
             type='text'
             name='firstName'
-            value={this.state.firstName}
-            onChange={this.handlerInputChange}
+            value={formContact.firstName}
+            onChange={handlerInputChange}
             placeholder='First name'
           />
-          <span className='delete-btn' onClick={this.clearInputValue}>
+          <span className='delete-btn' onClick={clearInputValue}>
             X
           </span>
         </div>
@@ -73,11 +52,11 @@ export class ContactForm extends Component {
           <input
             type='text'
             name='lastName'
-            value={this.state.lastName}
-            onChange={this.handlerInputChange}
+            value={formContact.lastName}
+            onChange={handlerInputChange}
             placeholder='Last name'
           />
-          <span className='delete-btn' onClick={this.clearInputValue}>
+          <span className='delete-btn' onClick={clearInputValue}>
             X
           </span>
         </div>
@@ -85,11 +64,11 @@ export class ContactForm extends Component {
           <input
             type='email'
             name='email'
-            value={this.state.email}
-            onChange={this.handlerInputChange}
+            value={formContact.email}
+            onChange={handlerInputChange}
             placeholder='Email'
           />
-          <span className='delete-btn' onClick={this.clearInputValue}>
+          <span className='delete-btn' onClick={clearInputValue}>
             X
           </span>
         </div>
@@ -97,17 +76,17 @@ export class ContactForm extends Component {
           <input
             type='text'
             name='phone'
-            value={this.state.phone}
-            onChange={this.handlerInputChange}
+            value={formContact.phone}
+            onChange={handlerInputChange}
             placeholder='Phone'
           />
-          <span className='delete-btn' onClick={this.clearInputValue}>
+          <span className='delete-btn' onClick={clearInputValue}>
             X
           </span>
         </div>
         <button type='submit'>Save</button>
-        {this.state.id ? (
-          <button type='button' onClick={this.onDeleteContact}>
+        {formContact.id ? (
+          <button type='button' onClick={onDeleteContact}>
             Delete
           </button>
         ) : (
@@ -115,7 +94,6 @@ export class ContactForm extends Component {
         )}
       </form>
     );
-  }
 }
 
 export default ContactForm;

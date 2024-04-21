@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import './ContactForm.css';
 
 function ContactForm({onSubmit, deleteContact, currentContact, createEmptyContact}) {
@@ -94,6 +95,14 @@ function ContactForm({onSubmit, deleteContact, currentContact, createEmptyContac
         )}
       </form>
     );
+}
+
+ContactForm.propTypes = {
+  createEmptyContact: PropTypes.func.isRequired,
+  deleteContact: PropTypes.func.isRequired,
+  selectContact: PropTypes.func,
+  onSubmit: PropTypes.func.isRequired,
+  currentContact: PropTypes.object,
 }
 
 export default ContactForm;

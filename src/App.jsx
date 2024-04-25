@@ -3,6 +3,7 @@ import { nanoid } from 'nanoid';
 import './App.css';
 import ContactList from './components/ContactList/ContactList';
 import ContactForm from './components/ContactForm/ContactForm';
+import api from './api/contact-service';
 
 function App() {
   
@@ -11,9 +12,12 @@ function App() {
     ...createEmptyContact(),
   });
   
-  useEffect(() => {
-    const contacts = JSON.parse(localStorage.getItem('contacts')) || [];
-    setContacts(contacts);
+  useEffect(() => { 
+      api.get("/").then(({data}) => {
+        return data 
+          ? setContacts(data)
+          : setContacts([])
+    });
   }, []);
 
   function createEmptyContact() {
@@ -34,24 +38,26 @@ function App() {
 
   const addContact = (newContact) => {
     newContact.id = nanoid();
-    const updatedContacts = [...contacts, newContact];
-    setContacts(updatedContacts);
+    api.post('/', newContact).then(({data}) => {
+      const updatedContacts = [...contacts, data];
+      setContacts(updatedContacts);
+    })
     setCurrentContact(createEmptyContact());
-    saveContactToStorage(updatedContacts);
   };
 
   const updateContact = (updatedContact) => {
-    const updatedContacts = contacts.map((item) =>
-      item.id === updatedContact.id ? updatedContact : item
-    );
-    setContacts(updatedContacts);
+    api.put(`/${updatedContact.id}`, updatedContact).then(({data}) => {
+      const updatedContacts = contacts.map((contactItem) =>
+      contactItem.id === data.id ? data : contactItem
+      );
+      setContacts(updatedContacts);
+    })
     setCurrentContact(updatedContact);
-    saveContactToStorage(updatedContacts);
   };
 
   const deleteContact = (id) => {
+    api.delete(`/${id}`);
     const updatedContacts = contacts.filter((contact) => contact.id !== id);
-    saveContactToStorage(updatedContacts);
     setContacts(updatedContacts);
     id === currentContact.id
       ? setCurrentContact(createEmptyContact())
@@ -64,10 +70,6 @@ function App() {
 
   const selectEditedContact = (contact) => {
     setCurrentContact(contact);
-  };
-
-  const saveContactToStorage = (arrContacts) => {
-    localStorage.setItem('contacts', JSON.stringify(arrContacts));
   };
 
   return (

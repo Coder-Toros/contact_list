@@ -1,38 +1,41 @@
-import PropTypes from 'prop-types';
-import Contact from '../ContactItem/ContactItem';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import api from '../../api/contact-service';
+import {getContacts, createNewContact} from '../../store/actions/contactActions'
 import "./ContactList.css";
+import ContactItem from '../ContactItem/ContactItem';
 
-function ContactList({contactsList, onDelete, selectContact, createNewContact}) {
+function ContactList() {
+  
+  const dispatch = useDispatch();
+  const contactsList = useSelector((state) => state.contacts);
+
+  const createContact = () => {
+    dispatch(createNewContact())
+  }
+
+  useEffect(() => {
+    api.get('/').then(({data}) => dispatch(getContacts(data)))
+  }, [dispatch])
+
     return (
       <>
         {contactsList.map((contact) => {
           return (
-              <Contact
+              <ContactItem
                 key={contact.id} 
-                contact={contact} 
-                onDelete={onDelete}
-                selectContact={selectContact}
+                contact={contact}
               />
           );
         })}
         <button 
-          onClick={createNewContact}
+          onClick={createContact}
           className='btn'
         >
         New
         </button>
       </>
     );
-}
-ContactList.propTypes = {
-  createNewContact: PropTypes.func.isRequired,
-  contactsList: PropTypes.array,
-  onDelete: PropTypes.func.isRequired,
-  selectContact: PropTypes.func.isRequired,
-}
-
-ContactList.defaultProps = {
-  contactsList: [],
 }
 
 export default ContactList;

@@ -1,10 +1,25 @@
 import { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { delContact, addContact, updateContact } from '../../store/actions/contactActions';
+import api from '../../api/contact-service';
+
 import './ContactForm.css';
 
-function ContactForm({onSubmit, deleteContact, currentContact, createEmptyContact}) {
+function ContactForm() {
+  const dispatch = useDispatch();
 
   const [formContact, setFormContact] = useState({...createEmptyContact()})
+  const currentContact = useSelector((state) => state.currentContact);
+ 
+  function createEmptyContact(){
+    return {
+      id: null,
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+    }
+  }
   
   useEffect(() => {
     setFormContact(currentContact)
@@ -27,12 +42,19 @@ function ContactForm({onSubmit, deleteContact, currentContact, createEmptyContac
   };
 
   const onDeleteContact = () => {
-    deleteContact(formContact.id);
+    api.delete(`/${formContact.id}`)
+    dispatch(delContact(formContact.id))
   };
 
   const onFormSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formContact);
+    formContact.id
+    ? api.put(`/${formContact.id}`, formContact).then(({data}) => {
+      dispatch(updateContact(data));
+    })
+    : api.post('/', formContact).then(({data}) => {
+      dispatch(addContact(data));
+    })
   };
 
     return (
@@ -86,23 +108,12 @@ function ContactForm({onSubmit, deleteContact, currentContact, createEmptyContac
           </span>
         </div>
         <button type='submit'>Save</button>
-        {formContact.id ? (
-          <button type='button' onClick={onDeleteContact}>
+        {formContact.id && <button type='button' onClick={onDeleteContact}>
             Delete
           </button>
-        ) : (
-          ''
-        )}
+        }
       </form>
     );
-}
-
-ContactForm.propTypes = {
-  createEmptyContact: PropTypes.func.isRequired,
-  deleteContact: PropTypes.func.isRequired,
-  selectContact: PropTypes.func,
-  onSubmit: PropTypes.func.isRequired,
-  currentContact: PropTypes.object,
 }
 
 export default ContactForm;

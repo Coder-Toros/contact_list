@@ -1,15 +1,20 @@
-import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import api from '../../api/contact-service';
+import {delContact, selectEditedContact} from '../../store/actions/contactActions'
 import './ContactItem.css';
 
-function ContactItem({onDelete, selectContact, contact}) {
+function ContactItem({contact}) {
+  const dispatch = useDispatch();
+
   const onContactDelete = (e) => {
     e.stopPropagation();
-    onDelete(contact.id);
+    api.delete(`/${contact.id}`)
+    dispatch(delContact(contact.id));
   };
    
-  const selectEditedContact = (e) => {
+  const selectContact = (e) => {
     e.stopPropagation();
-    selectContact(contact)
+    dispatch(selectEditedContact(contact))
   }
   
   return (
@@ -18,7 +23,7 @@ function ContactItem({onDelete, selectContact, contact}) {
     >
       <p 
         className='content'
-        onDoubleClick={selectEditedContact}  
+        onDoubleClick={selectContact}  
       >
         {contact.firstName} {contact.lastName}
       </p>
@@ -30,12 +35,6 @@ function ContactItem({onDelete, selectContact, contact}) {
       </span>
     </div>
   );
-}
-
-ContactItem.propTypes = {
-  contact: PropTypes.object,
-  onDelete: PropTypes.func.isRequired,
-  selectContact: PropTypes.func.isRequired,
 }
 
 export default ContactItem;

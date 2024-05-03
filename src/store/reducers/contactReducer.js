@@ -15,29 +15,27 @@ function createEmptyContact() {
   };
 }
 
-export default function contactsReduser(
+export default function contactsReducer(
   state = initialState,
   { type, payload }
 ) {
   switch (type) {
-    case 'updateContact':
+    case 'UPDATE_CONTACT':
       return {
-          ...state,
-          contacts: state.contacts.map((contactItem) =>
-            contactItem.id === payload.id ? payload : contactItem
-          ),
-          currentContact: state.currentContact,
-        };
-        
-        case 'addContact': 
-        
-       return {
-            ...state,
-            contacts: [...state.contacts, payload],
-            currentContact: createEmptyContact(),
-          }
+        ...state,
+        contacts: state.contacts.map((contactItem) =>
+          contactItem.id === payload.id ? payload : contactItem
+        ),
+      };
 
-    case 'deleteContact':
+    case 'ADD_CONTACT':
+      return {
+        ...state,
+        contacts: [...state.contacts, payload],
+        currentContact: createEmptyContact(),
+      };
+
+    case 'DELETE_CONTACT':
       return {
         ...state,
         contacts: state.contacts.filter(
@@ -49,19 +47,19 @@ export default function contactsReduser(
             : state.currentContact,
       };
 
-    case 'selectContact':
+    case 'SELECT_CONTACT':
       return {
         ...state,
         currentContact: payload,
       };
 
-    case 'clearCurrentContact':
+    case 'CREATE_NEW_CONTACT':
       return {
         ...state,
         currentContact: createEmptyContact(),
       };
 
-    case 'getContacts':
+    case 'GET_CONTACTS':
       return {
         ...state,
         contacts: payload,

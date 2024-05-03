@@ -7,19 +7,8 @@ import './ContactForm.css';
 
 function ContactForm() {
   const dispatch = useDispatch();
-
-  const [formContact, setFormContact] = useState({...createEmptyContact()})
   const currentContact = useSelector((state) => state.currentContact);
- 
-  function createEmptyContact(){
-    return {
-      id: null,
-      firstName: '',
-      lastName: '',
-      email: '',
-      phone: '',
-    }
-  }
+  const [formContact, setFormContact] = useState(currentContact)
   
   useEffect(() => {
     setFormContact(currentContact)

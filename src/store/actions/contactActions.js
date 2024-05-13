@@ -28,10 +28,9 @@ export const selectEditedContact = (selectedContact) => {
     }
 }
 
-export const createNewContact = (payload) => {
+export const createNewContact = () => {
     return {
         type: ACTION_TYPES.CREATE_NEW_CONTACT,
-        payload,
     }
 }
 

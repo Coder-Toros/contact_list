@@ -1,6 +1,5 @@
 import { useDispatch } from 'react-redux';
-import api from '../../api/contact-service';
-import {delContact, selectEditedContact} from '../../store/actions/contactActions'
+import {delContact, selectContact} from '../../store/slices/contactSlice'
 import './ContactItem.css';
 
 function ContactItem({contact}) {
@@ -8,13 +7,12 @@ function ContactItem({contact}) {
 
   const onContactDelete = (e) => {
     e.stopPropagation();
-    api.delete(`/${contact.id}`)
     dispatch(delContact(contact.id));
   };
    
-  const selectContact = (e) => {
+  const selectEditedContact = (e) => {
     e.stopPropagation();
-    dispatch(selectEditedContact(contact))
+    dispatch(selectContact(contact))
   }
   
   return (
@@ -23,7 +21,7 @@ function ContactItem({contact}) {
     >
       <p 
         className='content'
-        onDoubleClick={selectContact}  
+        onDoubleClick={selectEditedContact}  
       >
         {contact.firstName} {contact.lastName}
       </p>

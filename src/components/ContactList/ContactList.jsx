@@ -1,21 +1,20 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import api from '../../api/contact-service';
-import {getContacts, createNewContact} from '../../store/actions/contactActions'
+// import api from '../../api/contact-service';
+import {getContacts, createNewContact} from '../../store/slices/contactSlice'
 import "./ContactList.css";
 import ContactItem from '../ContactItem/ContactItem';
 
 function ContactList() {
   
   const dispatch = useDispatch();
-  const contactsList = useSelector((state) => state.contacts);
-
+  const contactsList = useSelector((state) => state.contactList.contacts);
   const createContact = () => {
     dispatch(createNewContact())
   }
 
   useEffect(() => {
-    api.get('/').then(({data}) => dispatch(getContacts(data)))
+    dispatch(getContacts())
   }, [dispatch])
 
     return (

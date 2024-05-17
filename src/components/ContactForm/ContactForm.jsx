@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { delContact, addContact, updateContact } from '../../store/actions/contactActions';
-import api from '../../api/contact-service';
+import { delContact, addContact, updateContact } from '../../store/slices/contactSlice';
+
+// import api from '../../api/contact-service';
 
 import './ContactForm.css';
 
 function ContactForm() {
   const dispatch = useDispatch();
-  const currentContact = useSelector((state) => state.currentContact);
+  const currentContact = useSelector((state) => state.contactList.currentContact);
   const [formContact, setFormContact] = useState(currentContact)
   
   useEffect(() => {
@@ -31,19 +32,14 @@ function ContactForm() {
   };
 
   const onDeleteContact = () => {
-    api.delete(`/${formContact.id}`)
     dispatch(delContact(formContact.id))
   };
 
   const onFormSubmit = (e) => {
     e.preventDefault();
     formContact.id
-    ? api.put(`/${formContact.id}`, formContact).then(({data}) => {
-      dispatch(updateContact(data));
-    })
-    : api.post('/', formContact).then(({data}) => {
-      dispatch(addContact(data));
-    })
+      ? dispatch(updateContact(formContact))
+      : dispatch(addContact(formContact));
   };
 
     return (

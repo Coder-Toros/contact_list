@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@redux-devtools/extension": "^3.3.0",
+    "@reduxjs/toolkit": "^2.2.4",
     "axios": "^1.6.8",
     "nanoid": "^5.0.7",
     "prop-types": "^15.8.1",
